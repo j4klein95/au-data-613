@@ -71,8 +71,8 @@ flights %>%
     sched_arr_time = make_datetime_100(year, month, day, sched_arr_time)
   ) %>% 
   select(origin, dest, ends_with("delay"), ends_with("time")) ->
-
 flights_dt
+
 flights_dt
 
   
