@@ -76,13 +76,11 @@ flights_dt %>%
 ## *8) Now use dplyr functions to produce a data table that shows arrival times for American Airlines at the Dallas Fort Worth Airport from the LaGuardia airport in New York. Your output should show rows 115 to 125.*
 ```{r}
 flights_dt %>%
-  filter(origin == "LGA", dest == "DFW", carrier=="AA") -> aa_lga_to_dfw
+  select(origin, dest, carrier, arr_time)%>%
+  filter(origin == "LGA", dest == "DFW", carrier=="AA") %>%
+  slice(115:125) -> aa_lga_to_dfw
 
 aa_lga_to_dfw
-```
-```{r}
-flights_dt%>%
-  slice(115:125)
 ```
 
 
@@ -92,7 +90,5 @@ aa_lga_to_dfw %>%
   slice(1:2)%>%
   select(arr_time)%>%
   mutate(minute_interval = (lag(arr_time) %--% arr_time%/%dminutes(1)))
-
-ymd_hms('2013-01-01 09:41:00') %--%	ymd_hms('2013-01-01 10:28:00')%/%dminutes(1)
 ```
 
