@@ -1,0 +1,104 @@
+---
+title: "hw-functions"
+author: "Jared 'Jay' Klein and Connor Cabrey"
+date: "1/25/2022"
+output: word_document
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+## 1.  __Write a function that will find the sum of the natural log, the common log and a log of base 2 for any given positive number. Use your function to find answers for the first five even integers.  Show all details and structure of your function.  You should get five answers. The first two answers are 1.994177 and 3.988354. (Your output should show the other three)__
+
+```{r}
+num_calc <- function(x){
+  log(x)+log10(x)+log(x, base = 2)
+}
+
+num_calc(c(2,4,6,8,10))
+```
+
+## 2. ___Use the if-else structure to print the statement "This is a big number" if the square of a value is greater than or equal to 100 and the following statement is printed if the square of the number is less than 100, "This is not a big number”. Use and show values of assignment and if-else structures that will output both statements.___
+
+```{r}
+check <- function(x) {
+  if (x^2 >= 100) {
+    result <- "This is a big number"
+  }
+  else {
+    result <- "This not a big number"
+  }
+  return(result)
+}
+
+check(10)
+check(9)
+```
+
+## 3. ___For the following if-else-if coding structure, make an adjustment so that it prints "Team A won".___
+
+```{r}
+team_A <- 3 # Number of goals scored by Team A
+team_B <- 2# Number of goals scored by Team B
+
+if (team_A > team_B){
+  print ("Team A won")
+} else if (team_A < team_B){
+  print ("Team B won")
+} else {
+  "Team A & B tied."
+}
+```
+
+## 4. __Write an if- else if- else sequence of commands that will output the following statements and appropriate output; If a value is divisible by 3 and 5 the output statement is "divisible by Three and Five", If a value is divisible by 3 and 4, the output statement is "divisible by Three and Four, If a value is a number that does not fall into either category, the output statement should be  "neither".Use your function to show output statements for values 16, 45, and 24.__
+
+```{r}
+
+func_3 <- function(x) {
+  if (x%%3==0 && x%%5==0) {
+    result <- "divisible by Three and Five"
+  }
+  else if (x%%3==0 && x%%4==0) {
+    result <- "divisible by Three and Four"
+  }
+  else {
+    result <- "neither"
+  }
+  return(result)
+}
+
+func_3(16)
+func_3(45)
+func_3(24)
+```
+
+## 5.  __Use piping and a dplyr command show and use R code to produce the following modified mpg data table that contains only quantitative variables__
+
+```{r}
+new_df <- mpg %>%
+  select(-(year)) %>%
+  dplyr::select(where(is.numeric))
+```
+
+__Now use the “special loop coding chunk”, illustrated in class, to produce the variance for all variables of the modified data table.__
+
+```{r}
+for (col_var in new_df) {
+  print(var(col_var))
+}
+```
+
+## 6. __Construct a for loop (as illustrated in the notes) that will produce the difference between the cube and the square for each prime number between 10 and 30.  (There are 6 answers. The first answer is 1210, your for loop coding should produce the other five answers)__
+
+```{r}
+is.prime <- function(n) n == 2L || all(n %% 2L:max(2,floor(sqrt(n))) != 0)
+
+for (num_var in seq(10, 30)) {
+  if (is.prime(num_var)) {
+    result_num <- (num_var^3) - (num_var^2)
+    print(result_num) 
+  } else next
+}
+```

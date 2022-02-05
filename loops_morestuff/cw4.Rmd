@@ -1,0 +1,73 @@
+---
+title: "cw-map2maploop-1"
+author: "Jared 'Jay' Klein"
+date: "2/2/2022"
+output: word_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+x <- list(2, 4, 5, 9, 1)
+y <- list(8, 7, 2, 8, 3)
+z <- list(1, 8, 5, 4, 2)
+```
+
+1) __For the lists given above, show and use R code (a map function) to iteratively find the square of the sums across the vectors__
+
+```{r}
+pmap_dbl(list(x,y,z), function(first, second, third) (first + second + third)^2)
+```
+
+tribble( ~Student,  ~Gender,    ~Salary,
+                   "John",   "Male",       65000,
+                   "Alice",  "Female",    73000,
+                    "Juan",   "Male",       66000,
+                    "Beth",  "Female",    71500,
+                    "Denise", "Female",  82000
+) -> table
+table
+2) __Using the data table above, use and show R code that will output a statement that is descriptive for all rows of the data table.The first row is given below.  Your code should produce the other specific statements. _John who is Male, has a salary that is 65000 dollars per year_.__
+```{r}
+tribble( ~Student,  ~Gender,    ~Salary,
+                   "John",   "Male",       65000,
+                   "Alice",  "Female",    73000,
+                    "Juan",   "Male",       66000,
+                    "Beth",  "Female",    71500,
+                    "Denise", "Female",  82000
+) -> table
+```
+```{r}
+table %>%
+  pmap_chr(~ str_glue("{..1} who is {..2} has a salary that is {..3} per year."))
+```
+
+3) __Write a nested loop that will produce a 5 by 5 matrix that whose matrix elements are sums of the corresponding columns and rows.__
+```{r}
+da_matrix1_was_da_best_movie = matrix(nrow = 5, ncol = 5)
+for (variable in 1:nrow(da_matrix1_was_da_best_movie)) {
+  for (var in 1:ncol(da_matrix1_was_da_best_movie)) {
+    da_matrix1_was_da_best_movie[variable,var] = variable + var
+  }
+}
+print(da_matrix1_was_da_best_movie)
+```
+
+
+4) Use for loop coding to produce the number sequence
+```{r}
+i <- 1
+while(i < 21){
+  if (i == 10 | i == 5) {
+    i = i + 1
+    next
+  } else {
+    print(i)
+    i = i + 1
+  }
+}
+```
+
