@@ -1,0 +1,84 @@
+---
+title: "hw-4"
+author: "Jared 'Jay' Klein and Connor Cabrey"
+date: "2/8/2022"
+output: word_document
+---
+
+```{r}
+library(tidyverse)
+library(purrr)
+```
+
+
+## 1. __Use the R function nrow to confirm that the iris data frame has 150 rows. Then use and show R code that features a map function to confirm that the iris data frame has 150 rows.__
+```{r}
+nrow(iris)
+str(iris)
+map(iris, NROW)
+```
+
+__b. Each column of the iris data frame has a unique number of values or objects. For example, the column Sepal.Length has 150 values but 35 of them are unique. Use and show R code that features a map function to find the number of unique values or objects for each column of the iris dataframe.__
+```{r}
+map_dbl(iris, n_distinct)
+```
+
+## 2. __Use and show R code that features a nested loop that will produce the  5 by 3 matrix shown below.__
+```{r}
+matrix1 = matrix(nrow=3, ncol=5)
+for (i in 1:nrow(matrix1)) 
+  {
+  for (j in 1:ncol(matrix1)) 
+    {
+    matrix1[i,j] <- (-i+j)
+  }
+}
+print(matrix1)
+```
+
+## 3. __Use and show R code that will produce a tibble that features 10 randomly generated values that are normally distributed, with means of -10, 0, 10 and 100 respectfully.  Run your code again, producing a second tibble, that confirms random values, hence the second table will not have the same values.__
+```{r}
+tibble(a = rnorm(10, mean = -10), b = rnorm(10, mean = 0), c = rnorm(10, mean = 10), d = rnorm(10, mean = 10)) -> questionable_tibble
+questionable_tibble
+
+map_dbl(questionable_tibble, mean)
+```
+## 4. __In statistics, a z score indicates the standard deviation distance between the mean and a specific value of the data set. What formula is used to find a z score? Use and show R coding that features a map function to iteratively find z scores across the lists given above.__
+```{r}
+X <- list(12, 14, 15, 18, 19, 22,10,18,18)
+Mean <- list(16, 16, 16, 16, 16,16,16,16,16)
+sd <- list(2, 2, 2, 2, 2,2,2,2,2)
+
+pmap_dbl(list(X,Mean,sd), function(first, second, third) ((first - second) / third))
+```
+
+__The test statistic for a population mean is given by the formula ((X - mean)/s/sqrt(n)) Use and show R coding that features a map function to iteratively find test statistics for population means across the lists given above.__
+```{r}
+pmap_dbl(list(X,Mean,sd), function(first, second, third) ((first - second) / (third^2 * sqrt(length(X)))))
+```
+
+## 5. __Another purr package function is the keep( ) function. Research, explore, and use the keep( ) function to extract all number from the vector V given above that are less than 20__
+```{r}
+V = c(10,15,17,22,32,38,42)
+V %>% 
+  keep(V<20)
+```
+
+__Another purr package function is the discard( ) function. Research, explore, and use the discard( ) function to eliminate all numbers from the vector V given above that are less than 20__
+```{r}
+V %>% 
+  discard(V<20)
+```
+
+## 6 __Another purr package function is the safely( ) function. Research, explore, and apply the safely( ) function  to the given vector below as illustrated. U = list(10,15,"mary",22,32,"james",42) map(U, safely(~ .x + 15))__
+```{r}
+U = list(10,15,"mary",22,32,"james",42)
+map(U, safely(~ .x + 15))
+```
+
+
+
+__In four or five sentences, explain the specific output for this problem and how the definition and the application of the safely( ) function is used.__
+
+_PURRR's safely method is a tool that is used with iterable functionals (ie map()) to determine what errors occured during an execution. In a loop, R will throw errors when our conditions/applied functions fail (ie. if you have a function that adds numbers, but there is a string in the iterable object, R will let you know where and when the error occured in the loop). This is not the case for functionals which is why we use safely(). Safely will look through the results and will let you know when and where an error occured. For example, with the list "U", safely informed us that when it was trying to run map() using our input function it received an error on the 3rd and 6th iterations. It gave us the exact error in $error (that the value was non numeric) and the resulting value in $result. What makes safely() interesting is that it does not cancel the iteration if an error is found unlike a loop. _
+
